@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{yy-MM-dd HH:mm} %C [%t] %level - %m%n" />
+		</Console>
+	</Appenders>
+	<!-- 
+	<로그레벨 종류> 
+	TRACE > DEBUG > INFO > WARN > ERROR > FATAL 순 입니다.
+	
+	 << Log Level >>
+	- TRACE : log4j1.2.12에서 신규 추가된 레벨으로서. 디버그 레벨이 너무 광범위한 것을 해결하기 위해서 좀더 상세한 상태를 나타냄.
+	- DEBUG : 개발시 디버그 용도로 사용한 메시지를 나타냄.
+	- INFO :  로그인, 상태변경과 같은 정보성 메시지를 나타냄.
+	- WARN :  처리 가능한 문제이지만, 향후 시스템 에러의 원인이 될 수 있는 경고성 메시지를 나타냄. 
+	- ERROR :  요청을 처리하는중 문제가 발생한 상태를 나타냄.
+	- FATAL :  아주 심각한 에러가 발생한 상태를 나타냄. 시스템적으로 심각한 문제가 발생해서 어플리케이션 작동이 불가능할 경우가 해당하는데, 일반적으로는 어플리케이션에서는 사용할 일이 없음.
+	   
+	다만 이때 Logger의 setLevel에서 지정된 로그레벨이 있다면 지정된 로그레벨 이하의 로깅이벤트는 무시된다.
+	
+	ex) logger.setLevel(Level.INFO);
+	코드내에 위처럼 지정되어 있다면, 다음의 세 코드 중
+	
+	logger.debug("debug 로그");
+	logger.info("info 로그");
+	logger.warn("warning 로그");
+	
+	debug 로그는 남지 않고 info 와 warn 로그만 남는다.
+	
+	additivity="false" : 중복로그 출력하지 않겠다.
+	 -->	
+	<loggers>
+		<!--  기본 로그레벨과 어펜더 지정 -->
+		<Root level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</Root>
+		
+		<!-- 패키지별 로그 지정 -->
+		<!-- log4j2 -->
+		<logger name="log4jdbc.log4j2" level="INFO" additivity="false">
+			<appender-ref ref="console" />
+		</logger>
+		<!-- QUERY LOG -->
+		<logger name="jdbc.sqlonly" additivity="false" level="INFO">
+			<appender-ref ref="console" />
+		</logger>
+		<!-- RESULTSET TABLE -->
+		<logger name="jdbc.resultsettable" additivity="off" level="INFO">
+			<appender-ref ref="console" />
+		</logger>
+		<!-- query + time -->
+		<logger name="jdbc.sqltiming" level="ERROR" />
+		<!-- 전체 로그 ( 양 상당히 많아짐 ) -->
+		<logger name="jdbc.audit" level="ERROR" />
+		<!-- resultsettable + resultset (parameter) -->
+		<logger name="jdbc.resultset" level="ERROR" />
+		<!-- connection log -->
+		<logger name="jdbc.connection" level="INFO" />
+		<logger name="kr.human" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</logger>
+	</loggers>
+	<!-- 
+		dbc.connection	: 열려있는 모든 번호와 연결 수립 및 해제 이벤트를 기록. 
+		                  이는 연결 문제를 찾아내는데 매우 유용 (Connection Pool 설정)
+		jdbc.audit	: ResultSet을 제외한 모든 JDBC 호출 정보를 로그로 남긴다. 
+		              많은 양의 로그가 생성되므로 특별히 JDBC 문제를 추적해야 할 필요가 있는 경우를 
+		              제외하고는 사용을 권장하지 않는다.
+		jdbc.resultset : ResultSet을 포함한 모든 JDBC 호출 정보를 로그로 남기므로 
+		                 매우 방대한 양의 로그가 생성된다.
+		jdbc.sqlonly	: SQL문만을 로그로 남기며, PreparedStatement일 경우 관련된 argument 값으로 대체된 
+		                  SQL문이 보여진다. (원래는 ? 로 표시되는데, log4j 덕분에 완전한 쿼리로 보여지는 것임)
+		jdbc.resultsettable	: SQL 결과 조회된 데이터의 table을 로그로 남긴다.
+		jdbc.sqltiming	: SQL문과 해당 SQL을 실행시키는데 수행된 시간 정보(milliseconds)를 포함한다.	
+	 -->
+</Configuration>

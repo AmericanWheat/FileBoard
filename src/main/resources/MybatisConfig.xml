@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="db.properties"/>
+	<typeAliases>
+		<typeAlias type="kr.human.fileboard.vo.FBoardVO" alias="FBoardVO"/>
+		<typeAlias type="kr.human.fileboard.vo.UploadVO" alias="UploadVO"/>
+	</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${o.driverClassName}" />
+				<property name="url" value="${o.url}" />
+				<property name="username" value="${o.user}" />
+				<property name="password" value="${o.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="testMapper.xml" />
+		<mapper resource="fboardMapper.xml"/>
+		<mapper resource="uploadMapper.xml"/>
+	</mappers>
+</configuration>
