@@ -98,4 +98,34 @@ public class FBoardService {
 			sqlSession.close();
 		}
 	}
+
+	public FBoardVO selectByIdx(int idx) {
+		FBoardVO fBoardVO = null;
+		SqlSession sqlSession = null;
+		FBoardDAO fBoardDAO = null;
+		UploadDAO uploadDAO = null;
+
+		try {
+			sqlSession = MybatisApp.getSqlSessionFactory().openSession(false);
+			fBoardDAO = FBoardDAO.getInstance();
+			uploadDAO = UploadDAO.getInstance();
+
+			fBoardVO = fBoardDAO.selectByIdx(sqlSession, idx);
+			if (fBoardVO != null) {
+				List<UploadVO> fileList = uploadDAO.selectFileList(sqlSession, fBoardVO.getIdx());
+				fBoardVO.setUploadList(fileList);
+			}
+
+			sqlSession.commit();
+		} catch (Exception e) {
+			if (sqlSession != null)
+				sqlSession.rollback();
+		} finally {
+			if (sqlSession != null)
+				sqlSession.close();
+		}
+		log.info("selectByIdx 리턴값: " + fBoardVO);
+		return fBoardVO;
+	}
+
 }

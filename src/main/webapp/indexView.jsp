@@ -31,6 +31,7 @@ $(function(){
 </head>
 <body>
 	<table>
+	
 		<tr>
 			<td class="title" colspan="6">
 				자료실 목록보기
@@ -58,14 +59,14 @@ $(function(){
 			<c:forEach var="vo" items="${pv.list }" varStatus="vs">
 				<tr>
 					<td>${vo.idx }</td>
-					<td> <c:out value="${vo.name }"/> </td>
+					<td>${vo.name }</td>
 					<td>
-						<a href="#"><c:out value="${vo.subject }"/> </a>
+						<a href="view.jsp?p=${p }&s=${s }&b=${b }&idx=${vo.idx}">${vo.subject } </a>
 						&nbsp; 
 						<%-- 첨부파일 개수만큼 디스트이름으로 링크를 걸자 --%>
 						<c:if test="${not empty vo.uploadList }">
 							<c:forEach var="f" items="${vo.uploadList }">
-								<a href="download.jsp?of=${f.ofile }&sf=${f.sfile}" title="${f.ofile }"><i class="axi axi-attach-file"></i></a>
+								<a href="download.jsp?of=${f.ofile }&sf=${f.sfile}" title="${f.ofile }"><i class="axi axi-download"></i></a>
 							</c:forEach>
 						</c:if>
 					</td>
